@@ -1,2 +1,2 @@
-# laravel-example-code
-Example Laravel code
+# Example Laravel code
+Coming soon...
