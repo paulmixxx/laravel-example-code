@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  gateway:
+    image: nginx:alpine
+    volumes:
+      - .:/usr/share/nginx/default
+      - ./docker/dev/nginx/conf.d/default.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+    depends_on:
+      - app
+    environment:
+      TZ: 'Europe/Moscow'
+  app:
+    build: ./docker/dev/app
+    volumes:
+      - .:/var/www/html
+      - ./docker/dev/app/conf.d/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+    depends_on:
+      - db
+    environment:
+      TZ: 'Europe/Moscow'
+  db:
+    image: mysql:5.7
+    environment:
+      TZ: 'Europe/Moscow'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_DATABASE: 'app'
+    ports:
+      - 3306:3306
+    volumes:
+      - data-db:/var/lib/mysql
+
+volumes:
+  data-db:

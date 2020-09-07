@@ -1,0 +1,8 @@
+/.idea
+/.git
+/.gitattributes
+/.gitignore
+/node_modules
+/.dockerignore
+/docker-compose.yml
+/docker-compose.prod.yml

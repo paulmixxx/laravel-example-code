@@ -1,0 +1,49 @@
+version: '3.7'
+
+services:
+  gateway:
+    image: ${IMAGE_GATEWAY}
+    volumes:
+      - ./storage/logs:/usr/share/nginx/default/storage/logs
+    ports:
+      - 80:80
+    depends_on:
+      - app
+    environment:
+      TZ: 'Europe/Moscow'
+    networks:
+      - prod-laravel
+  app:
+    image: ${IMAGE_APP_FPM}
+    depends_on:
+      - db
+    volumes:
+      - ./.env:/var/www/html/.env
+      - ./storage:/var/www/html/storage
+      - ./bootstrap/cache:/var/www/html/bootstrap/cache
+    environment:
+      TZ: 'Europe/Moscow'
+    networks:
+      - prod-laravel
+  db:
+    image: mysql:5.7
+    env_file: ./.env
+    environment:
+      TZ: 'Europe/Moscow'
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${DB_DATABASE}"
+      MYSQL_USER: "${DB_USERNAME}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+    ports:
+      - 3306:3306
+    volumes:
+      - data-db:/var/lib/mysql
+    networks:
+      - prod-laravel
+
+volumes:
+  data-db:
+
+networks:
+  prod-laravel:
+      external: true

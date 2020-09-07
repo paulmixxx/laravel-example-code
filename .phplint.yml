@@ -1,0 +1,14 @@
+path: ./
+jobs: 10
+cache: var/.phplint.json
+extensions:
+  - php
+exclude:
+  - .git
+  - .idea
+  - vendor
+  - node_modules
+  - storage
+  - resources
+  - docker
+  - var
